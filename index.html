@@ -1,0 +1,96 @@
+<style>
+    body { font-family: sans-serif; max-width: 600px; margin: 40px auto; padding: 0 20px; line-height: 1.6; background: #fafafa; color: #333; }
+    .box { background: #fff; padding: 25px; border-radius: 8px; margin-bottom: 25px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); border: 1px solid #eef; }
+    h2 { text-align: center; color: #222; }
+    h3 { margin-top: 0; color: #444; border-bottom: 2px solid #f0f0f0; padding-bottom: 8px; }
+    textarea, input { width: 100%; padding: 10px; margin: 10px 0 16px 0; box-sizing: border-box; border: 1px solid #ddd; border-radius: 4px; font-size: 14px; }
+    textarea { resize: vertical; }
+    button { width: 100%; padding: 12px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; font-weight: bold; }
+    button:hover { background: #0056b3; }
+    .result { background: #f8f9fa; padding: 15px; word-break: break-all; margin-top: 15px; border-left: 4px solid #28a745; border-radius: 0 4px 4px 0; font-family: monospace; font-size: 14px; }
+    .error { border-left-color: #dc3545; color: #dc3545; }
+</style>
+
+<div class="container">
+</div>
+    <h2>🔐暗号守君</h2>
+
+    <div class="box">
+        <h3>1. 暗号化する</h3>
+        <label>暗号化したいメッセージ:</label>
+        <textarea id="plainText" rows="3" placeholder="ここに秘密の文字列を入力"></textarea>
+        <label>パスワード:</label>
+        <input type="password" id="encryptPassword" placeholder="パスワードを設定">
+        <button id="btnEncrypt">暗号化を実行</button>
+        <div id="encryptResult" class="result" style="display:none;"></div>
+    </div>
+
+    <div class="box">
+        <h3>2. 復号化（解除）する</h3>
+        <label>解除したい暗号文:</label>
+        <textarea id="cipherText" rows="3" placeholder="ここに暗号文を入力"></textarea>
+        <label>パスワード:</label>
+        <input type="password" id="decryptPassword" placeholder="パスワードを入力">
+        <button id="btnDecrypt">復号化を実行</button>
+        <div id="decryptResult" class="result" style="display:none;"></div>
+    </div>
+</div>
+
+<script>
+    async function getCryptoKey(password) {
+        const enc = new TextEncoder();
+        const pwHash = await window.crypto.subtle.digest("SHA-256", enc.encode(password));
+        return await window.crypto.subtle.importKey("raw", pwHash, { name: "AES-GCM" }, false, ["encrypt", "decrypt"]);
+    }
+
+    document.getElementById('btnEncrypt').addEventListener('click', async () => {
+        const text = document.getElementById('plainText').value;
+        const password = document.getElementById('encryptPassword').value;
+        if(!text || !password) return alert('入力内容が不足しています。');
+        
+        try {
+            const enc = new TextEncoder();
+            const key = await getCryptoKey(password);
+            const iv = window.crypto.getRandomValues(new Uint8Array(12));
+            const encrypted = await window.crypto.subtle.encrypt({ name: "AES-GCM", iv: iv }, key, enc.encode(text));
+            
+            const cipherHex = Array.from(new Uint8Array(encrypted)).map(b => b.toString(16).padStart(2, '0')).join('');
+            const ivHex = Array.from(iv).map(b => b.toString(16).padStart(2, '0')).join('');
+            
+            const resultBox = document.getElementById('encryptResult');
+            resultBox.className = "result";
+            resultBox.innerText = ivHex + cipherHex;
+            resultBox.style.display = 'block';
+        } catch(e) {
+            alert('暗号化に失敗しました。');
+        }
+    });
+
+    document.getElementById('btnDecrypt').addEventListener('click', async () => {
+        const hexCipherText = document.getElementById('cipherText').value.trim();
+        const password = document.getElementById('decryptPassword').value;
+        if(!hexCipherText || !password) return alert('入力内容が不足しています。');
+        
+        const resultBox = document.getElementById('decryptResult');
+        try {
+            if (hexCipherText.length < 24) throw new Error();
+            
+            const key = await getCryptoKey(password);
+            const iv = new Uint8Array(hexCipherText.substring(0, 24).match(/.{1,2}/g).map(byte => parseInt(byte, 16)));
+            const encryptedBytes = new Uint8Array(hexCipherText.substring(24).match(/.{1,2}/g).map(byte => parseInt(byte, 16)));
+            
+            const decrypted = await window.crypto.subtle.decrypt({ name: "AES-GCM", iv: iv }, key, encryptedBytes);
+            
+            resultBox.className = "result";
+            resultBox.innerText = "🎉 復元成功:\n" + new TextDecoder().decode(decrypted);
+            resultBox.style.display = 'block';
+        } catch(e) {
+            resultBox.className = "result error";
+            resultBox.innerText = "❌ 復号失敗: パスワードが間違っているか、暗号文が壊れています。";
+            resultBox.style.display = 'block';
+        }
+    });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="script.js"></script>
