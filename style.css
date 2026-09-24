@@ -1,0 +1,563 @@
+```css
+/* =========================
+   RESET
+========================= */
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family:
+        Inter,
+        "Noto Sans JP",
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+
+    color: #e5e7eb;
+
+    background: #050816;
+
+    overflow-x: hidden;
+}
+
+
+/* =========================
+   BACKGROUND
+========================= */
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -3;
+
+    background:
+        radial-gradient(
+            circle at 15% 15%,
+            rgba(79, 70, 229, 0.25),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 85% 20%,
+            rgba(6, 182, 212, 0.18),
+            transparent 28%
+        ),
+        radial-gradient(
+            circle at 50% 90%,
+            rgba(124, 58, 237, 0.18),
+            transparent 35%
+        );
+}
+
+body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+
+    opacity: 0.25;
+
+    background-image:
+        linear-gradient(
+            rgba(255,255,255,0.025) 1px,
+            transparent 1px
+        ),
+        linear-gradient(
+            90deg,
+            rgba(255,255,255,0.025) 1px,
+            transparent 1px
+        );
+
+    background-size: 45px 45px;
+
+    mask-image:
+        linear-gradient(
+            to bottom,
+            black,
+            transparent 90%
+        );
+}
+
+
+/* =========================
+   MAIN CONTAINER
+========================= */
+
+.container {
+    width: min(900px, calc(100% - 40px));
+    margin: 0 auto;
+    padding: 70px 0 100px;
+}
+
+
+/* =========================
+   TITLE
+========================= */
+
+h2 {
+    margin: 0 0 12px;
+
+    text-align: center;
+
+    font-size: clamp(32px, 6vw, 52px);
+    font-weight: 900;
+    letter-spacing: -2px;
+
+    color: #ffffff;
+
+    text-shadow:
+        0 0 20px rgba(99, 102, 241, 0.6),
+        0 0 50px rgba(59, 130, 246, 0.25);
+}
+
+
+/* タイトル下のライン */
+
+h2::after {
+    content: "";
+
+    display: block;
+
+    width: 90px;
+    height: 4px;
+
+    margin: 18px auto 55px;
+
+    border-radius: 99px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #6366f1,
+            #22d3ee
+        );
+
+    box-shadow:
+        0 0 15px rgba(99, 102, 241, 0.8);
+}
+
+
+/* =========================
+   BOX
+========================= */
+
+.box {
+    position: relative;
+
+    margin-bottom: 30px;
+    padding: 34px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(20, 25, 48, 0.97),
+            rgba(8, 12, 28, 0.97)
+        );
+
+    border: 1px solid rgba(148, 163, 184, 0.15);
+
+    border-radius: 24px;
+
+    box-shadow:
+        0 25px 70px rgba(0,0,0,0.45),
+        inset 0 1px 0 rgba(255,255,255,0.05);
+
+    overflow: hidden;
+}
+
+
+/* 上部の発光ライン */
+
+.box::before {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: 0;
+    right: 0;
+
+    height: 3px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #6366f1,
+            #22d3ee,
+            #8b5cf6
+        );
+
+    box-shadow:
+        0 0 20px rgba(99,102,241,0.7);
+}
+
+
+/* 左側のアクセント */
+
+.box::after {
+    content: "";
+
+    position: absolute;
+
+    width: 150px;
+    height: 150px;
+
+    right: -80px;
+    top: -80px;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(99,102,241,0.12),
+            transparent 70%
+        );
+
+    pointer-events: none;
+}
+
+
+/* =========================
+   HEADINGS
+========================= */
+
+h3 {
+    position: relative;
+
+    margin: 0 0 28px;
+
+    padding-left: 18px;
+
+    color: #ffffff;
+
+    font-size: 22px;
+    font-weight: 800;
+
+    border: none;
+}
+
+
+/* 見出し左ライン */
+
+h3::before {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    top: 50%;
+
+    width: 5px;
+    height: 28px;
+
+    transform: translateY(-50%);
+
+    border-radius: 99px;
+
+    background:
+        linear-gradient(
+            #6366f1,
+            #22d3ee
+        );
+
+    box-shadow:
+        0 0 12px rgba(99,102,241,0.8);
+}
+
+
+/* =========================
+   LABEL
+========================= */
+
+label {
+    display: block;
+
+    margin-bottom: 9px;
+
+    color: #a5b4fc;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    letter-spacing: 0.5px;
+}
+
+
+/* =========================
+   INPUT
+========================= */
+
+textarea,
+input {
+    display: block;
+
+    width: 100%;
+
+    margin: 0 0 22px;
+    padding: 16px 18px;
+
+    color: #f8fafc;
+
+    background: #070b18;
+
+    border: 1px solid #27304d;
+
+    border-radius: 13px;
+
+    outline: none;
+
+    font-family: inherit;
+    font-size: 15px;
+
+    transition:
+        border-color 0.2s,
+        box-shadow 0.2s,
+        background 0.2s;
+}
+
+
+textarea {
+    min-height: 125px;
+
+    resize: vertical;
+}
+
+
+textarea::placeholder,
+input::placeholder {
+    color: #475569;
+}
+
+
+textarea:hover,
+input:hover {
+    border-color: #3b4668;
+}
+
+
+textarea:focus,
+input:focus {
+    background: #080d20;
+
+    border-color: #6366f1;
+
+    box-shadow:
+        0 0 0 4px rgba(99,102,241,0.10),
+        0 0 25px rgba(99,102,241,0.08);
+}
+
+
+/* =========================
+   BUTTON
+========================= */
+
+button {
+    position: relative;
+
+    width: 100%;
+
+    margin-top: 2px;
+    padding: 16px 20px;
+
+    color: #ffffff;
+
+    background:
+        linear-gradient(
+            135deg,
+            #4f46e5,
+            #6366f1 50%,
+            #2563eb
+        );
+
+    border: 0;
+
+    border-radius: 13px;
+
+    cursor: pointer;
+
+    font-size: 15px;
+    font-weight: 800;
+
+    letter-spacing: 0.5px;
+
+    box-shadow:
+        0 10px 30px rgba(79,70,229,0.3);
+
+    overflow: hidden;
+
+    transition:
+        transform 0.2s,
+        box-shadow 0.2s,
+        filter 0.2s;
+}
+
+
+button::before {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: -120%;
+
+    width: 80%;
+    height: 100%;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(255,255,255,0.25),
+            transparent
+        );
+
+    transform: skewX(-25deg);
+
+    transition: left 0.5s;
+}
+
+
+button:hover {
+    transform: translateY(-3px);
+
+    filter: brightness(1.12);
+
+    box-shadow:
+        0 15px 40px rgba(79,70,229,0.45),
+        0 0 30px rgba(99,102,241,0.15);
+}
+
+
+button:hover::before {
+    left: 140%;
+}
+
+
+button:active {
+    transform: translateY(0);
+}
+
+
+/* =========================
+   RESULT
+========================= */
+
+.result {
+    position: relative;
+
+    margin-top: 22px;
+    padding: 20px;
+
+    color: #c7d2fe;
+
+    background: #050914;
+
+    border: 1px solid #202a47;
+
+    border-left: 4px solid #22c55e;
+
+    border-radius: 13px;
+
+    font-family:
+        "SFMono-Regular",
+        Consolas,
+        "Liberation Mono",
+        monospace;
+
+    font-size: 13px;
+
+    line-height: 1.8;
+
+    word-break: break-all;
+
+    overflow-wrap: anywhere;
+
+    box-shadow:
+        inset 0 0 30px rgba(34,197,94,0.025);
+}
+
+
+/* 結果のステータス */
+
+.result::before {
+    content: "●  ENCRYPTED DATA";
+
+    display: block;
+
+    margin-bottom: 12px;
+
+    color: #4ade80;
+
+    font-size: 10px;
+    font-weight: 800;
+
+    letter-spacing: 2px;
+}
+
+
+.error {
+    color: #fecaca;
+
+    background: #17090c;
+
+    border-color: rgba(239,68,68,0.2);
+
+    border-left-color: #ef4444;
+}
+
+
+.error::before {
+    content: "●  ERROR";
+
+    color: #f87171;
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 600px) {
+
+    .container {
+        width: calc(100% - 24px);
+        padding-top: 40px;
+    }
+
+    h2 {
+        font-size: 32px;
+    }
+
+    h2::after {
+        margin-bottom: 35px;
+    }
+
+    .box {
+        padding: 24px 18px;
+        border-radius: 18px;
+    }
+
+    h3 {
+        font-size: 19px;
+    }
+
+    textarea,
+    input {
+        padding: 14px;
+    }
+
+    button {
+        padding: 15px;
+    }
+}
+```
